@@ -30,7 +30,7 @@ void    *thread_f(void *data)
     pthread_mutex_lock(&(secure->mutex));
     printf("mutex lock by %lu\n", my);
     printf("%d\n", *(secure->index));
-    *(secure->index)++;
+    (*secure->index)++;
     printf("index incremented by %lu, index : %d\n", my, *(secure->index));
     
     pthread_mutex_unlock(&(secure->mutex));
