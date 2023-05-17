@@ -25,17 +25,15 @@ void    *thread_f(void *data)
     t_mutex *secure = (t_mutex *)data;
     pthread_t my = secure->thread;
 
-    while (security(' ') != my)
-        ;
     pthread_mutex_lock(&(secure->mutex));
     printf("mutex lock by %lu\n", my);
-    printf("%d\n", *(secure->index));
     (*secure->index)++;
     printf("index incremented by %lu, index : %d\n", my, *(secure->index));
     
     pthread_mutex_unlock(&(secure->mutex));
     security('+');
     printf("mutex unlock by %lu\n", my);
+    return (NULL);
 }
 
 int main()
