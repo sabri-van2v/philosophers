@@ -55,3 +55,4 @@ int main()
     pthread_mutex_destroy(&(secure[0].mutex));
     printf("finish, the value is %d\n", *(secure[0].index));
 }
+ 

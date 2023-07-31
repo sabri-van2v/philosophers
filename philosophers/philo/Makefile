@@ -1,4 +1,4 @@
-SRC = 	philo.c
+SRC = 	philo.c parsing.c utils.c
 
 SRCS = 	${addprefix srcs/, ${SRC}}
 
@@ -16,7 +16,7 @@ CC 	= 	cc
 
 RM 	= 	rm -f
 
-CFLAGS = -Wall -Wextra -Werror -g3
+CFLAGS = -Wall -Wextra -Werror
 
 INCLUDES = includes/
 
