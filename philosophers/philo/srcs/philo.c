@@ -16,5 +16,6 @@ int main(int argc, char **argv)
     if (!parsing(argc, argv, &data))
         return (1);
     //print_philo(&data);
-    execute(&data);
+    if (!execute(&data))
+        return (1);
 }

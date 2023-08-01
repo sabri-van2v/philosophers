@@ -14,7 +14,7 @@ void    fill_data(t_data *data, char **argv)
     if (argv[5])
         data->must_eat = ft_atoi(argv[5]);
     else
-        data->must_eat = 0;
+        data->must_eat = -1;
 }
 
 int is_valid_number(char *str)

@@ -1,4 +1,6 @@
-SRC = 	philo.c parsing.c utils.c
+SRC = 	philo.c parsing.c utils.c \
+		execute.c monitoring.c \
+		routine.c print.c
 
 SRCS = 	${addprefix srcs/, ${SRC}}
 
