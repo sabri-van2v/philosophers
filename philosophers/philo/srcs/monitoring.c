@@ -18,13 +18,13 @@ void    call_printers()
     print_dead(0);
 }
 
-void    join_philos(pthread_t *philo, int number)
+void    join_philos(pthread_t *philos, int number)
 {
     int i;
 
     i = 0;
     while (i < number)
-        pthread_join(philo[i++], NULL);
+        pthread_join(philos[i++], NULL);
 }
 
 void    monitoring(t_data *data, pthread_t *philos, t_philo *args)
@@ -46,7 +46,7 @@ void    monitoring(t_data *data, pthread_t *philos, t_philo *args)
         i = 0;
         while (i < data->number_of_philosophers)
         {
-            if (get_time() - args[i].last_meal >= data->time_to_die * checker)
+            if ((get_time() - args[i].last_meal >= data->time_to_die * checker) && args[i].must_eat != 0)
             {
                 data->die = 1;
                 pthread_mutex_lock(&data->printer);

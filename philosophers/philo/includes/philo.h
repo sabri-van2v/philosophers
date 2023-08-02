@@ -58,7 +58,7 @@ void    *routine(void *arg);
 
 void    init_last_meals(long start, int number, t_philo *args);
 void    call_printers();
-void    join_philos(pthread_t *philo, int number);
+void    join_philos(pthread_t *philos, int number);
 void    monitoring(t_data *data, pthread_t *philos, t_philo *args);
 
 void    init_mutex_and_args(pthread_mutex_t *forks, t_philo *arg, t_data *data);

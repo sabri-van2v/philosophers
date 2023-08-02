@@ -22,7 +22,12 @@ void    init_mutex_and_args(pthread_mutex_t *forks, t_philo *arg, t_data *data)
         if (i != 0)
             (arg[i].forks)[0] = &forks[i - 1];
         else
-            (arg[i].forks)[0] = &forks[data->number_of_philosophers - 1];
+        {
+            if (data->number_of_philosophers > 1)
+                (arg[i].forks)[0] = &forks[data->number_of_philosophers - 1];
+            else
+                (arg[i].forks)[0] = NULL;
+        }
         (arg[i].forks)[1] = &forks[i];
         i++;
     }

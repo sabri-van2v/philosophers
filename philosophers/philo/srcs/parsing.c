@@ -2,7 +2,7 @@
 
 void    error_argument()
 {
-    write(2, "Error\nInvalid arguments.\n", 25);
+    write(2, "Error\nInvalid arguments\n", 24);
 }
 
 void    fill_data(t_data *data, char **argv)
@@ -20,10 +20,17 @@ void    fill_data(t_data *data, char **argv)
 int is_valid_number(char *str)
 {
     int i;
+    int result;
 
     i = 0;
+    result = 0;
     while (str[i] >= '0' && str[i] <= '9')
+    {
+        result = result * 10 + (str[i] - '0');
+        if (result < 0)
+            return (0);
         i++;
+    }
     if (i != ft_strlen(str) || str[0] == '0' || i == 0)
         return (0);
     return (1);
