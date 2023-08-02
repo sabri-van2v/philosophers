@@ -20,10 +20,10 @@ void    init_mutex_and_args(pthread_mutex_t *forks, t_philo *arg, t_data *data)
         arg[i].printer = &data->printer;
         arg[i].someone_die = &data->die;
         if (i != 0)
-            arg[i].forks[0] = forks[i - 1];
+            (arg[i].forks)[0] = &forks[i - 1];
         else
-            arg[i].forks[0] = forks[data->number_of_philosophers - 1];
-        arg[i].forks[1] = forks[i];
+            (arg[i].forks)[0] = &forks[data->number_of_philosophers - 1];
+        (arg[i].forks)[1] = &forks[i];
         i++;
     }
 }

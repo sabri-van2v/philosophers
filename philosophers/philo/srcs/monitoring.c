@@ -42,17 +42,13 @@ void    monitoring(t_data *data, pthread_t *philos, t_philo *args)
     while (data->must_eat)
     {
         usleep(data->time_to_die * 1000);
+        checker++;
         i = 0;
         while (i < data->number_of_philosophers)
         {
-            // printf("last_meal [ %d ] : %lu\n", i, args[i].last_meal);
-            // printf("data->sta [ %d ] : %lu\n", i, data->start);
-            // printf("diff [ %d ] : %lu\n", i, args[i].last_meal - data->start);
-            //printf("tdie [ %d ] : %d\n", i, data->time_to_die * checker);
-            if (args[i].last_meal - data->start > data->time_to_die * checker)
+            if (get_time() - args[i].last_meal >= data->time_to_die * checker)
             {
                 data->die = 1;
-                usleep(1000);
                 pthread_mutex_lock(&data->printer);
                 print_dead(i + 1);
                 join_philos(philos, data->number_of_philosophers);
@@ -60,8 +56,8 @@ void    monitoring(t_data *data, pthread_t *philos, t_philo *args)
             }
             i++;
         }
-        checker++;
         if (data->must_eat > 0)
             data->must_eat--;
     }
+    join_philos(philos, data->number_of_philosophers);
 }

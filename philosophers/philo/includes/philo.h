@@ -28,7 +28,7 @@ typedef struct s_philo
     int             must_eat;
     long            last_meal;
     int             *someone_die;
-    pthread_mutex_t forks[2];
+    pthread_mutex_t *forks[2];
     pthread_mutex_t *printer;
 }   t_philo;
 
@@ -65,7 +65,6 @@ void    init_mutex_and_args(pthread_mutex_t *forks, t_philo *arg, t_data *data);
 void    destroy_mutex(pthread_mutex_t *forks, t_data *data);
 int    execute(t_data *data);
 
-void    print_philo(t_data *data);
 int main(int argc, char **argv);
 
 #endif

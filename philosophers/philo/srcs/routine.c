@@ -2,31 +2,39 @@
 
 void    take_forks(t_philo *philo)
 {
-    pthread_mutex_lock(&philo->forks[0]);
+    pthread_mutex_lock(philo->forks[0]);
     pthread_mutex_lock(philo->printer);
-    print_fork(philo->name);
+    if (!*(philo->someone_die))
+        print_fork(philo->name);
     pthread_mutex_unlock(philo->printer);
-    pthread_mutex_lock(&philo->forks[1]);
+    pthread_mutex_lock(philo->forks[1]);
     pthread_mutex_lock(philo->printer);
-    print_fork(philo->name);
+    if (!*(philo->someone_die))
+        print_fork(philo->name);
     pthread_mutex_unlock(philo->printer);
 }
 
 void    is_eating(t_philo *philo)
 {
     pthread_mutex_lock(philo->printer);
-    print_eat(philo->name);
+    if (!*(philo->someone_die))
+        print_eat(philo->name);
+    else
+        return ;
     pthread_mutex_unlock(philo->printer);
     philo->last_meal = get_time();
-    usleep((philo->time_to_eat) * 1000);
+    usleep(philo->time_to_eat * 1000);
 }
 
 void    is_sleeping(t_philo *philo)
 {
-    pthread_mutex_unlock(&philo->forks[0]);
-    pthread_mutex_unlock(&philo->forks[1]);
+    pthread_mutex_unlock(philo->forks[0]);
+    pthread_mutex_unlock(philo->forks[1]);
     pthread_mutex_lock(philo->printer);
-    print_sleep(philo->name);
+    if (!*(philo->someone_die))
+        print_sleep(philo->name);
+    else
+        return ;
     pthread_mutex_unlock(philo->printer);
     usleep(philo->time_to_sleep * 1000);
 }
@@ -34,7 +42,8 @@ void    is_sleeping(t_philo *philo)
 void    is_thinking(t_philo *philo)
 {
     pthread_mutex_lock(philo->printer);
-    print_think(philo->name);
+    if (!*(philo->someone_die))
+        print_think(philo->name);
     pthread_mutex_unlock(philo->printer);
 }
 
@@ -47,6 +56,8 @@ void    *routine(void *arg)
         usleep(philo->time_to_eat * 1000);
     while (philo->must_eat)
     {
+        if (*(philo->someone_die))
+            return (unlock_all(philo), NULL);
         take_forks(philo);
         if (*(philo->someone_die))
             return (unlock_all(philo), NULL);
@@ -57,8 +68,6 @@ void    *routine(void *arg)
         if (*(philo->someone_die))
             return (unlock_all(philo), NULL);
         is_thinking(philo);
-        if (*(philo->someone_die))
-            return (unlock_all(philo), NULL);
         if (philo->must_eat > 0)
             philo->must_eat--;
     }

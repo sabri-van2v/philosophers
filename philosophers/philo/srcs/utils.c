@@ -49,7 +49,7 @@ void    putnbr(long number)
 
 void    unlock_all(t_philo *philo)
 {
-    pthread_mutex_unlock(&philo->forks[0]);
-    pthread_mutex_unlock(&philo->forks[1]);
+    pthread_mutex_unlock(philo->forks[0]);
+    pthread_mutex_unlock(philo->forks[1]);
     pthread_mutex_unlock(philo->printer);
 }
