@@ -5,11 +5,14 @@ void    init_mutex_and_args(pthread_mutex_t *forks, t_philo *arg, t_data *data)
     int i;
 
     i = 0;
+    pthread_mutex_init(&data->death, NULL);
+    pthread_mutex_init(&data->all_finish, NULL);
     pthread_mutex_init(&data->printer, NULL);
     while (i < data->number_of_philosophers)
         pthread_mutex_init(&forks[i++], NULL);
     i = 0;
     data->die = 0;
+    data->finish = 0;
     while (i < data->number_of_philosophers)
     {
         arg[i].name = i + 1;
@@ -18,7 +21,10 @@ void    init_mutex_and_args(pthread_mutex_t *forks, t_philo *arg, t_data *data)
         arg[i].time_to_sleep = data->time_to_sleep;
         arg[i].must_eat = data->must_eat;
         arg[i].printer = &data->printer;
+        arg[i].death = &data->death;
+        arg[i].all_finish = &data->all_finish;
         arg[i].someone_die = &data->die;
+        arg[i].finish = &data->finish;
         if (i != 0)
             (arg[i].forks)[0] = &forks[i - 1];
         else

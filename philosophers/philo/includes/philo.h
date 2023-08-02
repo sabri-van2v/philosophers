@@ -16,7 +16,10 @@ typedef struct s_data
     int must_eat;
     int die;
     long    start;
+    int finish;
     pthread_mutex_t printer;
+    pthread_mutex_t death;
+    pthread_mutex_t all_finish;
 }   t_data;
 
 typedef struct s_philo
@@ -28,8 +31,11 @@ typedef struct s_philo
     int             must_eat;
     long            last_meal;
     int             *someone_die;
+    int             *finish;
     pthread_mutex_t *forks[2];
     pthread_mutex_t *printer;
+    pthread_mutex_t *death;
+    pthread_mutex_t *all_finish;
 }   t_philo;
 
 void    print_fork(int number);

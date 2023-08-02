@@ -31,6 +31,7 @@ void    monitoring(t_data *data, pthread_t *philos, t_philo *args)
 {
     int i;
     int checker;
+    int count;
 
     i = -1;
     checker = 0;
@@ -41,7 +42,24 @@ void    monitoring(t_data *data, pthread_t *philos, t_philo *args)
         pthread_create(&philos[i], NULL, routine, &args[i]);
     while (data->must_eat)
     {
-        usleep(data->time_to_die * 1000);
+        count = data->time_to_die;
+        while (count > 0)
+        {
+            if (count > 1000)
+            {
+                usleep(1000000);
+                count -= 1000;
+            }
+            else
+            {
+                usleep(count * 1000);
+                count = 0;
+            }
+            if (data->finish == data->number_of_philosophers)
+                break ;
+        }
+        if (data->finish == data->number_of_philosophers)
+            break ;
         checker++;
         i = 0;
         while (i < data->number_of_philosophers)

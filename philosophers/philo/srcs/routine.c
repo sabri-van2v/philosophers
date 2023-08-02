@@ -8,6 +8,8 @@ void    take_forks(t_philo *philo)
         pthread_mutex_lock(philo->printer);
         if (!*(philo->someone_die))
             print_fork(philo->name);
+        else
+            return ((void)pthread_mutex_unlock(philo->printer));
         pthread_mutex_unlock(philo->printer);
     }
     pthread_mutex_lock(philo->forks[1]);
@@ -25,7 +27,7 @@ void    is_eating(t_philo *philo)
     if (!*(philo->someone_die))
         print_eat(philo->name);
     else
-        return ;
+        return ((void)pthread_mutex_unlock(philo->printer));
     pthread_mutex_unlock(philo->printer);
     philo->last_meal = get_time();
     count = philo->time_to_eat;
@@ -56,7 +58,7 @@ void    is_sleeping(t_philo *philo)
     if (!*(philo->someone_die))
         print_sleep(philo->name);
     else
-        return ;
+        return ((void)pthread_mutex_unlock(philo->printer));
     pthread_mutex_unlock(philo->printer);
     count = philo->time_to_sleep;
     while (count > 0)
@@ -112,7 +114,7 @@ void    *routine(void *arg)
     while (philo->must_eat)
     {
         if (*(philo->someone_die))
-            return (unlock_all(philo), NULL);
+            return (NULL);
         take_forks(philo);
         if (*(philo->someone_die) || !philo->forks[0])
             return (unlock_all(philo), NULL);
@@ -121,10 +123,11 @@ void    *routine(void *arg)
             return (unlock_all(philo), NULL);
         is_sleeping(philo);
         if (*(philo->someone_die))
-            return (unlock_all(philo), NULL);
+            return (NULL);
         is_thinking(philo);
         if (philo->must_eat > 0)
             philo->must_eat--;
     }
+    (*philo->finish)++;
     return (NULL);
 }
