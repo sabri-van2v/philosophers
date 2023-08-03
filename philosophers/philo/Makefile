@@ -1,6 +1,6 @@
 SRC = 	philo.c parsing.c utils.c \
 		execute.c monitoring.c \
-		routine.c print.c
+		routine.c print.c memory.c
 
 SRCS = 	${addprefix srcs/, ${SRC}}
 
@@ -18,7 +18,7 @@ CC 	= 	cc
 
 RM 	= 	rm -f
 
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 
 INCLUDES = includes/
 

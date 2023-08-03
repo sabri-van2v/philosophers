@@ -1,5 +1,14 @@
 #include "philo.h"
 
+void    swap_order(pthread_mutex_t **a, pthread_mutex_t **b)
+{
+    pthread_mutex_t *tmp;
+
+    tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
 void    init_mutex_and_args(pthread_mutex_t *forks, t_philo *arg, t_data *data)
 {
     int i;
@@ -25,6 +34,7 @@ void    init_mutex_and_args(pthread_mutex_t *forks, t_philo *arg, t_data *data)
         arg[i].all_finish = &data->all_finish;
         arg[i].someone_die = &data->die;
         arg[i].finish = &data->finish;
+        pthread_mutex_init(&(arg[i].meal), NULL);
         if (i != 0)
             (arg[i].forks)[0] = &forks[i - 1];
         else
@@ -35,18 +45,29 @@ void    init_mutex_and_args(pthread_mutex_t *forks, t_philo *arg, t_data *data)
                 (arg[i].forks)[0] = NULL;
         }
         (arg[i].forks)[1] = &forks[i];
+        if ((i + 1) % 2 == 0)
+            swap_order(&((arg[i].forks)[0]), &((arg[i].forks)[1]));
         i++;
     }
+    // printf(" 1   -->  left : %p\n", (arg[0].forks)[0]);
+    // printf(" 1   -->  right : %p\n", (arg[0].forks)[1]);
+    // printf(" 2   -->  left : %p\n", (arg[1].forks)[0]);
+    // printf(" 2   -->  right : %p\n", (arg[1].forks)[1]);
 }
 
-void    destroy_mutex(pthread_mutex_t *forks, t_data *data)
+void    destroy_mutex(pthread_mutex_t *forks, t_data *data, t_philo *arg)
 {
     int i;
 
     i = 0;
+    pthread_mutex_destroy(&data->death);
+    pthread_mutex_destroy(&data->all_finish);
+    pthread_mutex_destroy(&data->printer);
     while (i < data->number_of_philosophers)
         pthread_mutex_destroy(&forks[i++]);
-    pthread_mutex_destroy(&data->printer);
+    i = 0;
+    while (i < data->number_of_philosophers)
+        pthread_mutex_destroy(&(arg[i++].meal));
 }
 
 int    execute(t_data *data)
@@ -58,11 +79,11 @@ int    execute(t_data *data)
     philos = malloc(sizeof(pthread_t) * data->number_of_philosophers);
     forks = malloc(sizeof(pthread_mutex_t) * data->number_of_philosophers);
     arg = malloc(sizeof(t_philo) * data->number_of_philosophers);
-    if (!philos || !forks || !arg)
+    if (!philos || !forks || !arg || !get_str())
         return (free(philos), free(forks), free(arg), 0);
     init_mutex_and_args(forks, arg, data);
     monitoring(data, philos, arg);
-    destroy_mutex(forks, data);
-    (free(philos), free(forks), free(arg));
+    destroy_mutex(forks, data, arg);
+    (free(philos), free(forks), free(arg), free(get_str()));
     return (1);
 }

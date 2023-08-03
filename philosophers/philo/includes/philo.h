@@ -6,6 +6,15 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <sys/time.h>
+#include <string.h>
+
+enum step
+{
+    FORK,
+    EAT,
+    SLEEP,
+    THINK,
+};
 
 typedef struct s_data
 {
@@ -15,7 +24,6 @@ typedef struct s_data
     int time_to_sleep;
     int must_eat;
     int die;
-    long    start;
     int finish;
     pthread_mutex_t printer;
     pthread_mutex_t death;
@@ -36,6 +44,7 @@ typedef struct s_philo
     pthread_mutex_t *printer;
     pthread_mutex_t *death;
     pthread_mutex_t *all_finish;
+    pthread_mutex_t meal;
 }   t_philo;
 
 void    print_fork(int number);
@@ -44,10 +53,17 @@ void    print_sleep(int number);
 void    print_think(int number);
 void    print_dead(int number);
 
+int access_death(t_philo *philo);
+void    access_all_finish(t_philo *philo);
+int    access_printer(t_philo *philo, int type);
+void    ft_sleep(int count, t_philo *philo);
+char *get_str();
+
 long    get_time();
 int ft_strlen(char *str);
 int ft_atoi(char *str);
-void    putnbr(long number);
+void    putnbr(long number, char *str, int *i);
+void    fill_str(char *str, char *filler, int *i);
 void    unlock_all(t_philo *philo);
 
 void    error_argument();
@@ -62,13 +78,13 @@ void    is_sleeping(t_philo *philo);
 void    is_thinking(t_philo *philo);
 void    *routine(void *arg);
 
-void    init_last_meals(long start, int number, t_philo *args);
+//void    init_last_meals(long start, int number, t_philo *args);
 void    call_printers();
 void    join_philos(pthread_t *philos, int number);
 void    monitoring(t_data *data, pthread_t *philos, t_philo *args);
 
 void    init_mutex_and_args(pthread_mutex_t *forks, t_philo *arg, t_data *data);
-void    destroy_mutex(pthread_mutex_t *forks, t_data *data);
+void    destroy_mutex(pthread_mutex_t *forks, t_data *data, t_philo *arg);
 int    execute(t_data *data);
 
 int main(int argc, char **argv);
