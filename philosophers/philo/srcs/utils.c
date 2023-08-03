@@ -3,12 +3,9 @@
 long    get_time()
 {
     struct timeval tv;
-    long            time;
 
-    if (gettimeofday(&tv, NULL) == -1)
-        return (write(2, "gettimeofday failed\n", 20), -1);
-    time = (tv.tv_sec * 1000) + (tv.tv_usec / 1000);
-    return (time);
+    gettimeofday(&tv, NULL);
+    return ((long)((tv.tv_sec * 1000) + (tv.tv_usec / 1000)));
 }
 
 int ft_strlen(char *str)
