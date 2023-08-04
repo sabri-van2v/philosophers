@@ -2,6 +2,7 @@
 
 void    take_forks(t_philo *philo)
 {
+    usleep(1000);
     if (philo->forks[0])
     {
         pthread_mutex_lock(philo->forks[0]);
