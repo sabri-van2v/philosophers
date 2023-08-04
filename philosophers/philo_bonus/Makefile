@@ -1,4 +1,7 @@
-SRC = 	philo_bonus.c
+SRC = 	philo_bonus.c parsing.c \
+		execute.c monitoring.c \
+		routine.c utils.c \
+		print.c destroy.c
 
 SRCS = 	${addprefix srcs/, ${SRC}}
 
@@ -6,7 +9,7 @@ OBJ = 	${addprefix binaries/, ${SRC}}
 
 OBJS = 	${OBJ:%.c=%.o}
 
-NAME = 	philo_bonus.c
+NAME = 	philo_bonus
 
 MAKEBIN = @mkdir -p binaries/
 
@@ -41,4 +44,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY:	all bonus clean fclean re
+.PHONY:	all clean fclean re
