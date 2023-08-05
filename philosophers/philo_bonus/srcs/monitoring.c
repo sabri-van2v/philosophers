@@ -50,7 +50,7 @@ int ft_sleep_monitoring(t_data *data)
     {
         usleep(1000);
         sem_wait(data->checker);
-        if (data->death)
+        if (data->die)
             return (sem_post(data->checker), 2);
         if (data->all_finish)
             return (sem_post(data->checker), 0);
@@ -70,6 +70,7 @@ int   kill_all_process(t_data *data)
         kill(data->philo[i], SIGKILL);
         i++;
     }
+    usleep(1000);
     i = 0;
     while (i < data->number_of_philosophers)
     {
@@ -79,7 +80,7 @@ int   kill_all_process(t_data *data)
                 return (i + 1);
         i++;
     }
-    return (0);
+    return (1);
 }
 
 int philo_die(t_data *data)
@@ -89,6 +90,21 @@ int philo_die(t_data *data)
         return (sem_post(data->checker), 1);
     sem_post(data->checker);
     return (0);
+}
+
+void    join_threads(pthread_t check_finish, pthread_t check_death, t_data *data)
+{
+    int i;
+
+    i = 0;
+    while (i < data->number_of_philosophers)
+    {
+        sem_post(data->finish);
+        i++;
+    }
+    sem_post(data->death);
+    pthread_join(check_death, NULL);
+    pthread_join(check_finish, NULL);
 }
 
 void    monitoring(t_data *data)
@@ -112,6 +128,7 @@ void    monitoring(t_data *data)
         if (data->must_eat > 0)
             data->must_eat--;
     }
+    join_threads(check_death, check_finish, data);
     pthread_detach(check_death);
     pthread_detach(check_finish);
     wait_philo(data->number_of_philosophers);

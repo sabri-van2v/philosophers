@@ -34,6 +34,9 @@ void    create_philos(t_data *data)
 
 void    execute(t_data *data)
 {
+    data->philo = malloc(sizeof(pid_t) * data->number_of_philosophers);
+    if (!data->philo)
+        exit(1);
     init_semaphore(data);
     create_philos(data);
     monitoring(data);

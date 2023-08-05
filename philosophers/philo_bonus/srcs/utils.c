@@ -22,21 +22,21 @@ long    get_time()
 //     sem_post(data->printer);
 // }
 
-int ft_sleep(int count, t_data *data)
-{
-    long    current;
+// int ft_sleep(int count, t_data *data)
+// {
+//     long    current;
 
-    current = get_time();
-    if (current - data->last_meal + count >= data->time_to_die)
-    {
-        count = data->time_to_die - (current - data->last_meal);
-        current = -1;
-    }
-    usleep(count * 1000);
-    if (current == -1)
-        return (0);
-    return (1);
-}
+//     current = get_time();
+//     if (current - data->last_meal + count >= data->time_to_die)
+//     {
+//         count = data->time_to_die - (current - data->last_meal);
+//         current = -1;
+//     }
+//     usleep(count * 1000);
+//     if (current == -1)
+//         return (0);
+//     return (1);
+// }
 
 void    putnbr(long number, char *str, int *i)
 {

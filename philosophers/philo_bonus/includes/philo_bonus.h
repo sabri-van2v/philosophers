@@ -32,7 +32,7 @@ typedef struct s_data
     int name;
     long    last_meal;
     long    start;
-    pid_t   philo[200];
+    pid_t   *philo;
     int     all_finish;
     int     die;
     sem_t   *checker_philo;

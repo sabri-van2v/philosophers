@@ -18,8 +18,7 @@ void    is_eating(t_data *data)
     data->last_meal = get_time();
     sem_post(data->checker_philo);
     print_eat(data->name, data->start);
-    if (!ft_sleep(data->time_to_eat, data))
-        (sem_post(data->death), destroy_sem(data), exit(1));
+    usleep(data->time_to_eat * 1000);
 }
 
 void    is_sleeping(t_data *data)
@@ -27,8 +26,7 @@ void    is_sleeping(t_data *data)
     sem_post(data->forks);
     sem_post(data->forks);
     print_sleep(data->name, data->start);
-    if (!ft_sleep(data->time_to_sleep, data))
-        (sem_post(data->death), exit(1));
+    usleep(data->time_to_sleep * 1000);
 }
 
 void    is_thinking(t_data *data)
@@ -44,10 +42,15 @@ void    *monitoring_for_process(void *arg)
     while (1)
     {
         sem_wait(data->checker_philo);
+        if (data->all_finish)
+            return (sem_post(data->checker_philo), NULL);
         if (get_time() - data->last_meal >= data->time_to_die)
         {
             sem_post(data->death);
-            data->die = 1;
+            sem_close(data->checker_philo);
+            sem_unlink("checker_philo");
+            close_sem(data);
+            free(data->philo);
             exit(1);
         }
         sem_post(data->checker_philo);
@@ -74,6 +77,9 @@ void    routine(t_data *data)
             data->must_eat--;
     }
     sem_post(data->finish);
-    pthread_detach(process_die);
+    sem_wait(data->checker_philo);
+    data->all_finish = 1;
+    sem_post(data->checker_philo);
+    pthread_join(process_die, NULL);
     (destroy_sem(data), exit(0));
 }
