@@ -49,10 +49,6 @@ void    init_mutex_and_args(pthread_mutex_t *forks, t_philo *arg, t_data *data)
             swap_order(&((arg[i].forks)[0]), &((arg[i].forks)[1]));
         i++;
     }
-    // printf(" 1   -->  left : %p\n", (arg[0].forks)[0]);
-    // printf(" 1   -->  right : %p\n", (arg[0].forks)[1]);
-    // printf(" 2   -->  left : %p\n", (arg[1].forks)[0]);
-    // printf(" 2   -->  right : %p\n", (arg[1].forks)[1]);
 }
 
 void    destroy_mutex(pthread_mutex_t *forks, t_data *data, t_philo *arg)
@@ -79,11 +75,12 @@ int    execute(t_data *data)
     philos = malloc(sizeof(pthread_t) * data->number_of_philosophers);
     forks = malloc(sizeof(pthread_mutex_t) * data->number_of_philosophers);
     arg = malloc(sizeof(t_philo) * data->number_of_philosophers);
-    if (!philos || !forks || !arg || !get_str())
+    if (!philos || !forks || !arg)
         return (free(philos), free(forks), free(arg), 0);
     init_mutex_and_args(forks, arg, data);
     monitoring(data, philos, arg);
+    join_philos(philos, data->number_of_philosophers);
     destroy_mutex(forks, data, arg);
-    (free(philos), free(forks), free(arg), free(get_str()));
+    (free(philos), free(forks), free(arg));
     return (1);
 }

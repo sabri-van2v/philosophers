@@ -8,14 +8,6 @@
 #include <sys/time.h>
 #include <string.h>
 
-enum step
-{
-    FORK,
-    EAT,
-    SLEEP,
-    THINK,
-};
-
 typedef struct s_data
 {
     int number_of_philosophers;
@@ -33,6 +25,7 @@ typedef struct s_data
 typedef struct s_philo
 {
     int             name;
+    long            start;
     int             time_to_die;
     int             time_to_eat;
     int             time_to_sleep;
@@ -47,11 +40,11 @@ typedef struct s_philo
     pthread_mutex_t meal;
 }   t_philo;
 
-void    print_fork(int number);
-void    print_eat(int number);
-void    print_sleep(int number);
-void    print_think(int number);
-void    print_dead(int number);
+void    print_fork(t_philo *philo);
+void    print_eat(t_philo *philo);
+void    print_sleep(t_philo *philo);
+void    print_think(t_philo *philo);
+void    print_dead(t_philo *philo);
 
 int access_death(t_philo *philo);
 void    access_all_finish(t_philo *philo);

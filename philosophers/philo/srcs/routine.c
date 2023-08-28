@@ -6,12 +6,10 @@ void    take_forks(t_philo *philo)
     if (philo->forks[0])
     {
         pthread_mutex_lock(philo->forks[0]);
-        if (!access_printer(philo, FORK))
-            return ;
+        print_fork(philo);
     }
     pthread_mutex_lock(philo->forks[1]);
-    if (!access_printer(philo, FORK))
-        return ;
+    print_fork(philo);
 }
 
 void    is_eating(t_philo *philo)
@@ -19,8 +17,7 @@ void    is_eating(t_philo *philo)
     pthread_mutex_lock(&philo->meal);
     philo->last_meal = get_time();
     pthread_mutex_unlock(&philo->meal);
-    if (!access_printer(philo, EAT))
-        return ;
+    print_eat(philo);
     ft_sleep(philo->time_to_eat, philo);
 }
 
@@ -28,14 +25,13 @@ void    is_sleeping(t_philo *philo)
 {
     pthread_mutex_unlock(philo->forks[0]);
     pthread_mutex_unlock(philo->forks[1]);
-    if (!access_printer(philo, SLEEP))
-        return ;
+    print_sleep(philo);
     ft_sleep(philo->time_to_sleep, philo);
 }
 
 void    is_thinking(t_philo *philo)
 {
-    access_printer(philo, THINK);
+    print_think(philo);
 }
 
 void    *routine(void *arg)
