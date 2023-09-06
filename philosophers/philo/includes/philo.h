@@ -24,6 +24,7 @@ typedef struct s_data
 
 typedef struct s_philo
 {
+    int             number_of_philosophers;
     int             name;
     long            start;
     int             time_to_die;
@@ -47,7 +48,7 @@ void    print_think(t_philo *philo);
 void    print_dead(t_philo *philo);
 
 int access_death(t_philo *philo);
-void    access_all_finish(t_philo *philo);
+int    access_all_finish(t_philo *philo);
 int    access_printer(t_philo *philo, int type);
 void    ft_sleep(int count, t_philo *philo);
 char *get_str();

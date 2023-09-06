@@ -3,7 +3,7 @@
 int philo_die(t_philo *arg, int i)
 {
     pthread_mutex_lock(&(arg[i].meal));
-    if (arg[i].must_eat != 0 && get_time() - arg[i].last_meal >= arg[i].time_to_die)
+    if (get_time() - arg[i].last_meal >= arg[i].time_to_die)
     {
         pthread_mutex_unlock(&arg[i].meal);
         return (1);
@@ -37,7 +37,7 @@ void    monitoring(t_data *data, pthread_t *philos, t_philo *args)
     {
         pthread_mutex_lock(&data->all_finish);
         if (data->finish == data->number_of_philosophers)
-            break ;
+            return ((void)pthread_mutex_unlock(&data->all_finish));
         pthread_mutex_unlock(&data->all_finish);
         i = 0;
         while (i < data->number_of_philosophers)

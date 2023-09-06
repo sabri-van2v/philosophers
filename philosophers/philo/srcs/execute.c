@@ -24,6 +24,7 @@ void    init_mutex_and_args(pthread_mutex_t *forks, t_philo *arg, t_data *data)
     data->finish = 0;
     while (i < data->number_of_philosophers)
     {
+        arg[i].number_of_philosophers = data->number_of_philosophers;
         arg[i].name = i + 1;
         arg[i].time_to_die = data->time_to_die;
         arg[i].time_to_eat = data->time_to_eat;

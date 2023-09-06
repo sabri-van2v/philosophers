@@ -9,11 +9,16 @@ int access_death(t_philo *philo)
     return (0);
 }
 
-void    access_all_finish(t_philo *philo)
+int    access_all_finish(t_philo *philo)
 {
     pthread_mutex_lock(philo->all_finish);
-    (*philo->finish)++;
+    if (*philo->finish == philo->number_of_philosophers)
+    {
+        pthread_mutex_unlock(philo->all_finish);
+        return (1);
+    }
     pthread_mutex_unlock(philo->all_finish);
+    return (0);
 }
 
 void    ft_sleep(int count, t_philo *philo)
@@ -30,7 +35,7 @@ void    ft_sleep(int count, t_philo *philo)
             usleep(count * 1000);
             count = 0;
         }
-        if (access_death(philo))
+        if (access_death(philo) || access_all_finish(philo))
             return ;
     }
 }
