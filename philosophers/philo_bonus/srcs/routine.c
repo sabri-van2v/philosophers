@@ -67,19 +67,24 @@ void    routine(t_data *data)
     sem_unlink("checker_philo");
     data->checker_philo = sem_open("checker_philo", O_CREAT, 0644, 1);
     pthread_create(&process_die, NULL, monitoring_for_process, data);
-    while (data->must_eat)
+    while (1)
     {
         take_forks(data);
         is_eating(data);
         is_sleeping(data);
         is_thinking(data);
-        if (data->must_eat > 0)
+        if (data->must_eat >= 0)
+        {
+            if (data->must_eat == 0)
+            {
+                sem_wait(data->checker_philo);
+                data->all_finish = 1;
+                sem_post(data->checker_philo);
+            }
             data->must_eat--;
+        }
     }
     sem_post(data->finish);
-    sem_wait(data->checker_philo);
-    data->all_finish = 1;
-    sem_post(data->checker_philo);
     pthread_join(process_die, NULL);
     (destroy_sem(data), exit(0));
 }

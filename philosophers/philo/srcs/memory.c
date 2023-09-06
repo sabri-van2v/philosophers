@@ -16,25 +16,6 @@ void    access_all_finish(t_philo *philo)
     pthread_mutex_unlock(philo->all_finish);
 }
 
-// int    access_printer(t_philo *philo, int type)
-// {
-//     pthread_mutex_lock(philo->printer);
-//     if (!access_death(philo))
-//     {
-//         if (type == FORK)
-//             print_fork(philo->name);
-//         else if (type == EAT)
-//             print_eat(philo->name);
-//         else if (type == SLEEP)
-//             print_sleep(philo->name);
-//         else if (type == THINK)
-//             print_think(philo->name);
-//         return (pthread_mutex_unlock(philo->printer), 1);
-//     }
-//     pthread_mutex_unlock(philo->printer);
-//     return (0);
-// }
-
 void    ft_sleep(int count, t_philo *philo)
 {
     while (count > 0)

@@ -14,14 +14,6 @@
 #include <semaphore.h>
 #include <sys/time.h>
 
-// enum step
-// {
-//     FORK,
-//     EAT,
-//     SLEEP,
-//     THINK,
-// };
-
 typedef struct s_data
 {
     int number_of_philosophers;
@@ -70,7 +62,6 @@ void    is_thinking(t_data *data);
 void    routine(t_data *data);
 
 void    wait_philo(int number);
-int ft_sleep_monitoring(t_data *data);
 int philo_die(t_data *data);
 void    monitoring(t_data *data);
 

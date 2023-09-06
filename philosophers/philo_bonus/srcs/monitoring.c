@@ -44,21 +44,6 @@ void    *check_one_death(void *arg)
     return (NULL);
 }
 
-int ft_sleep_monitoring(t_data *data)
-{
-    while (1)
-    {
-        usleep(1000);
-        sem_wait(data->checker);
-        if (data->die)
-            return (sem_post(data->checker), 2);
-        if (data->all_finish)
-            return (sem_post(data->checker), 0);
-        sem_post(data->checker);
-    }
-    return (1);
-}
-
 int   kill_all_process(t_data *data)
 {
     int i;
@@ -117,8 +102,13 @@ void    monitoring(t_data *data)
     pthread_create(&check_death, NULL, check_one_death, data);
     while (data->must_eat)
     {
-        if (!ft_sleep_monitoring(data))
+        sem_wait(data->checker);
+        if (data->all_finish)
+        {
+            sem_post(data->checker);
             break ;
+        }
+        sem_post(data->checker);
         if (philo_die(data))
         {
             philo_dead = kill_all_process(data);

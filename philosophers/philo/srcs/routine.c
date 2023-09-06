@@ -43,7 +43,7 @@ void    *routine(void *arg)
         return (take_forks(philo), unlock_all(philo), NULL);
     if (philo->name % 2 == 0)
         ft_sleep(philo->time_to_eat, philo);
-    while (philo->must_eat)
+    while (1)
     {
         if (access_death(philo))
             return (NULL);
@@ -52,12 +52,17 @@ void    *routine(void *arg)
         is_sleeping(philo);
         is_thinking(philo);
         pthread_mutex_lock(&philo->meal);
-        if (philo->must_eat > 0)
+        if (philo->must_eat >= 0)
+        {
+            if (philo->must_eat == 0)
+            {
+                pthread_mutex_lock(philo->all_finish);
+                (*philo->finish)++;
+                pthread_mutex_unlock(philo->all_finish);
+            }
             philo->must_eat--;
+        }
         pthread_mutex_unlock(&philo->meal);
     }
-    pthread_mutex_lock(philo->all_finish);
-    (*philo->finish)++;
-    pthread_mutex_unlock(philo->all_finish);
     return (NULL);
 }
