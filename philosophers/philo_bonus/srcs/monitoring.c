@@ -44,10 +44,9 @@ void    *check_one_death(void *arg)
     return (NULL);
 }
 
-int   kill_all_process(t_data *data)
+void   kill_all_process(t_data *data)
 {
     int i;
-    int status;
 
     i = 0;
     while (i < data->number_of_philosophers)
@@ -56,6 +55,13 @@ int   kill_all_process(t_data *data)
         i++;
     }
     usleep(1000);
+}
+
+int get_name_of_philo_dying(t_data *data)
+{
+    int i;
+    int status;
+
     i = 0;
     while (i < data->number_of_philosophers)
     {
@@ -70,6 +76,7 @@ int   kill_all_process(t_data *data)
 
 int philo_die(t_data *data)
 {
+    usleep(500);
     sem_wait(data->checker);
     if (data->die)
         return (sem_post(data->checker), 1);
@@ -100,26 +107,26 @@ void    monitoring(t_data *data)
 
     pthread_create(&check_finish, NULL, check_all_finish, data);
     pthread_create(&check_death, NULL, check_one_death, data);
-    while (data->must_eat)
+    while (1)
     {
         sem_wait(data->checker);
         if (data->all_finish)
         {
             sem_post(data->checker);
+            kill_all_process(data);
             break ;
         }
         sem_post(data->checker);
         if (philo_die(data))
         {
-            philo_dead = kill_all_process(data);
+            kill_all_process(data);
+            philo_dead = get_name_of_philo_dying(data);
             print_dead(philo_dead, data->start);
             break ;
         }
-        if (data->must_eat > 0)
-            data->must_eat--;
     }
     join_threads(check_death, check_finish, data);
-    pthread_detach(check_death);
-    pthread_detach(check_finish);
+    // pthread_detach(check_death); //utile ?
+    // pthread_detach(check_finish); //utile ?
     wait_philo(data->number_of_philosophers);
 }

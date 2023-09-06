@@ -42,8 +42,6 @@ void    *monitoring_for_process(void *arg)
     while (1)
     {
         sem_wait(data->checker_philo);
-        if (data->all_finish)
-            return (sem_post(data->checker_philo), NULL);
         if (get_time() - data->last_meal >= data->time_to_die)
         {
             sem_post(data->death);
@@ -51,7 +49,7 @@ void    *monitoring_for_process(void *arg)
             sem_unlink("checker_philo");
             close_sem(data);
             free(data->philo);
-            exit(1);
+            exit (1);
         }
         sem_post(data->checker_philo);
     }
@@ -71,20 +69,19 @@ void    routine(t_data *data)
     {
         take_forks(data);
         is_eating(data);
-        is_sleeping(data);
-        is_thinking(data);
         if (data->must_eat >= 0)
         {
+            data->must_eat--;
             if (data->must_eat == 0)
             {
                 sem_wait(data->checker_philo);
-                data->all_finish = 1;
+                sem_post(data->finish);
                 sem_post(data->checker_philo);
             }
-            data->must_eat--;
         }
+        is_sleeping(data);
+        is_thinking(data);
     }
-    sem_post(data->finish);
     pthread_join(process_die, NULL);
     (destroy_sem(data), exit(0));
 }
