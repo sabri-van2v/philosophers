@@ -74,7 +74,7 @@ void    *routine(void *arg);
 
 void    call_printers();
 void    join_philos(pthread_t *philos, int number);
-void    monitoring(t_data *data, pthread_t *philos, t_philo *args);
+int    monitoring(t_data *data, pthread_t *philos, t_philo *args);
 
 void    init_mutex_and_args(pthread_mutex_t *forks, t_philo *arg, t_data *data);
 void    destroy_mutex(pthread_mutex_t *forks, t_data *data, t_philo *arg);

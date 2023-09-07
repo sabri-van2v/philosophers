@@ -27,7 +27,6 @@ typedef struct s_data
     pid_t   *philo;
     int     all_finish;
     int     die;
-    sem_t   *checker_philo;
     sem_t   *death;
     sem_t   *checker;
     sem_t   *finish;
@@ -47,6 +46,7 @@ void    print_think(int number, long start);
 void    print_dead(int number, long start);
 
 long    get_time();
+void	sleep_philo(t_data *philo, int count);
 int access_death(t_data *data);
 int    access_printer(t_data *data, int type);
 int ft_sleep(int count, t_data *data);
@@ -59,6 +59,7 @@ void    take_forks(t_data *data);
 void    is_eating(t_data *data);
 void    is_sleeping(t_data *data);
 void    is_thinking(t_data *data);
+void    monitoring_for_process(t_data *data);
 void    routine(t_data *data);
 
 void    wait_philo(int number);

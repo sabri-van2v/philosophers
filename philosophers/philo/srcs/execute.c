@@ -72,6 +72,7 @@ int    execute(t_data *data)
     pthread_t       *philos;
     pthread_mutex_t *forks;
     t_philo         *arg;
+    int             successful_threads;
 
     philos = malloc(sizeof(pthread_t) * data->number_of_philosophers);
     forks = malloc(sizeof(pthread_mutex_t) * data->number_of_philosophers);
@@ -79,8 +80,8 @@ int    execute(t_data *data)
     if (!philos || !forks || !arg)
         return (free(philos), free(forks), free(arg), 0);
     init_mutex_and_args(forks, arg, data);
-    monitoring(data, philos, arg);
-    join_philos(philos, data->number_of_philosophers);
+    successful_threads = monitoring(data, philos, arg);
+    join_philos(philos, successful_threads);
     destroy_mutex(forks, data, arg);
     (free(philos), free(forks), free(arg));
     return (1);

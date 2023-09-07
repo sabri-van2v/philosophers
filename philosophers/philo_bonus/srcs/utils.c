@@ -6,7 +6,7 @@
 /*   By: svan-de- <svan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 14:08:04 by svan-de-          #+#    #+#             */
-/*   Updated: 2023/09/06 14:09:34 by svan-de-         ###   ########.fr       */
+/*   Updated: 2023/09/07 22:35:57 by svan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,27 @@ long	get_time()
 
 	gettimeofday(&tv, NULL);
 	return ((long)((tv.tv_sec * 1000) + (tv.tv_usec / 1000)));
+}
+
+void	sleep_philo(t_data *philo, int count)
+{
+	int	init;
+
+	while (count > 0)
+	{
+		init = get_time() - philo->last_meal;
+		if (count > 1000)
+		{
+			usleep(1000000);
+			count -= get_time() - init;
+		}
+		else
+		{
+			usleep(count * 1000);
+			count = 0;
+		}
+		monitoring_for_process(philo);
+	}
 }
 
 void	putnbr(long number, char *str, int *i)

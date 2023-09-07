@@ -105,8 +105,14 @@ void    monitoring(t_data *data)
     pthread_t   check_finish;
     pthread_t   check_death;
 
-    pthread_create(&check_finish, NULL, check_all_finish, data);
-    pthread_create(&check_death, NULL, check_one_death, data);
+    if (pthread_create(&check_death, NULL, check_one_death, data) == -1)
+        return ;
+    if (pthread_create(&check_finish, NULL, check_all_finish, data) == -1)
+    {
+        sem_post(data->death);
+        pthread_join(check_death, NULL);
+        return ;
+    }
     while (1)
     {
         sem_wait(data->checker);
