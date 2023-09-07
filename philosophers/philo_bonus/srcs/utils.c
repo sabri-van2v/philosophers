@@ -22,21 +22,12 @@ long	get_time()
 
 void	sleep_philo(t_data *philo, int count)
 {
-	int	init;
+	long	init;
 
-	while (count > 0)
+	init = get_time();
+	while (get_time() - init < count)
 	{
-		init = get_time() - philo->last_meal;
-		if (count > 1000)
-		{
-			usleep(1000000);
-			count -= get_time() - init;
-		}
-		else
-		{
-			usleep(count * 1000);
-			count = 0;
-		}
+		usleep(1000);
 		monitoring_for_process(philo);
 	}
 }
