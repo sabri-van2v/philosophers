@@ -39,6 +39,6 @@ void    execute(t_data *data)
         exit(1);
     init_semaphore(data);
     create_philos(data);
-    //monitoring(data);
+    monitoring(data);
     destroy_sem(data);
 }

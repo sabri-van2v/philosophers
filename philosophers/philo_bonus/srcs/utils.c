@@ -25,6 +25,9 @@ void	sleep_philo(t_data *philo, int count)
 	long	init;
 
 	init = get_time();
+	// printf("init %ld\n", init);
+	// printf("get_time() %ld\n", get_time());
+	// printf("count %d\n", count);
 	while (get_time() - init < count)
 	{
 		usleep(1000);

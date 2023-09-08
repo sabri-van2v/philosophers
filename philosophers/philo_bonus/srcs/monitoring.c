@@ -131,6 +131,7 @@ void    monitoring(t_data *data)
             break ;
         }
     }
+    // printf("je suis le monitoring\n");
     join_threads(check_death, check_finish, data);
     // pthread_detach(check_death); //utile ?
     // pthread_detach(check_finish); //utile ?
