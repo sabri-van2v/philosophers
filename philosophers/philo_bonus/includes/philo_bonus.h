@@ -47,6 +47,7 @@ void    print_dead(int number, long start);
 
 long    get_time();
 void	sleep_philo(t_data *philo, int count);
+void	sleep_philo_think(t_data *philo);
 int access_death(t_data *data);
 int    access_printer(t_data *data, int type);
 int ft_sleep(int count, t_data *data);

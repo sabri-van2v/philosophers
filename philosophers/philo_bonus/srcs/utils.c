@@ -6,7 +6,7 @@
 /*   By: svan-de- <svan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 14:08:04 by svan-de-          #+#    #+#             */
-/*   Updated: 2023/09/07 22:35:57 by svan-de-         ###   ########.fr       */
+/*   Updated: 2023/09/08 18:38:58 by svan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,17 @@ void	sleep_philo(t_data *philo, int count)
 	{
 		usleep(1000);
 		monitoring_for_process(philo);
+	}
+}
+
+void	sleep_philo_think(t_data *philo)
+{
+	while (1)
+	{
+		usleep(1000);
+		monitoring_for_process(philo);
+		if (philo->forks->__align > 1)
+			break ;
 	}
 }
 

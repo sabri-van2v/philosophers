@@ -34,7 +34,7 @@ void    is_thinking(t_data *data)
     print_think(data->name, data->start);
     // printf("%d\n", data->time_to_die);
     // sleep_philo(data, (data->time_to_die - (get_time() - data->last_meal)) - data->time_to_eat);
-    sleep_philo(data, data->time_to_die - data->time_to_eat);
+    sleep_philo_think(data);
 }
 
 void    monitoring_for_process(t_data *data)
