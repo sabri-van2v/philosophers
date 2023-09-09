@@ -1,7 +1,8 @@
 SRC = 	philo_bonus.c parsing.c \
 		execute.c monitoring.c \
 		routine.c utils.c \
-		print.c destroy.c
+		print.c destroy.c \
+		stop_philo.c str_utils.c
 
 SRCS = 	${addprefix srcs/, ${SRC}}
 

@@ -6,13 +6,13 @@
 /*   By: svan-de- <svan-de-@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/06 14:08:04 by svan-de-          #+#    #+#             */
-/*   Updated: 2023/09/08 18:38:58 by svan-de-         ###   ########.fr       */
+/*   Updated: 2023/09/09 16:54:05 by svan-de-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-long	get_time()
+long	get_time(void)
 {
 	struct timeval	tv;
 
@@ -25,9 +25,6 @@ void	sleep_philo(t_data *philo, int count)
 	long	init;
 
 	init = get_time();
-	// printf("init %ld\n", init);
-	// printf("get_time() %ld\n", get_time());
-	// printf("count %d\n", count);
 	while (get_time() - init < count)
 	{
 		usleep(1000);
@@ -60,33 +57,10 @@ void	putnbr(long number, char *str, int *i)
 	}
 }
 
-void	fill_str(char *str, char *filler, int *i)
+int	ft_atoi(char *str)
 {
-	int index_fill;
-
-	index_fill = 0;
-	while (filler[index_fill])
-	{
-		str[*i] = filler[index_fill];
-		index_fill++;
-		(*i)++;
-	}
-}
-
-int ft_strlen(char *str)
-{
-	int i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
-
-int ft_atoi(char *str)
-{
-	int i;
-	int result;
+	int	i;
+	int	result;
 
 	i = 0;
 	result = 0;

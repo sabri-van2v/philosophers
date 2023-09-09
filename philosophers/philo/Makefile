@@ -1,6 +1,7 @@
 SRC = 	philo.c parsing.c utils.c \
 		execute.c monitoring.c \
-		routine.c print.c memory.c
+		routine.c print.c memory.c \
+		str_utils.c init_simulation.c
 
 SRCS = 	${addprefix srcs/, ${SRC}}
 

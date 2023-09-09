@@ -1,44 +1,62 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-de- <svan-de-@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/09/09 16:49:42 by svan-de-          #+#    #+#             */
+/*   Updated: 2023/09/09 17:25:44 by svan-de-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo_bonus.h"
 
-void    init_semaphore(t_data *data)
+sem_t	*create_sem(sem_t **sem, char *name, int number)
 {
-    if ((data->forks = sem_open("forks", O_CREAT, 0644, data->number_of_philosophers)) == SEM_FAILED
-        || (data->finish = sem_open("finish", O_CREAT, 0644, 0)) == SEM_FAILED
-        || (data->checker = sem_open("checker", O_CREAT, 0644, 1)) == SEM_FAILED
-        || (data->death = sem_open("death", O_CREAT, 0644, 0)) == SEM_FAILED)
-        (destroy_sem(data), exit(1));
+	return ((*sem = sem_open(name, O_CREAT, 0644, number)));
 }
 
-void    create_philos(t_data *data)
+void	init_semaphore(t_data *data)
 {
-    int i;
-
-    i = 0;
-    data->start = get_time();
-    data->last_meal = data->start;
-    while (i < data->number_of_philosophers)
-    {
-        data->philo[i] = fork();
-        if (data->philo[i] == -1)
-            write(2, "fork failed\n", 12);
-        if (data->philo[i] == 0)
-        {
-            data->name = i + 1;
-            if (data->name % 2 == 0)
-                usleep(data->time_to_eat * 1000);
-            routine(data);
-        }
-        i++;
-    }
+	if (create_sem(&data->forks, "forks", data->number_of_philosophers)
+		== SEM_FAILED
+		|| create_sem(&data->finish, "finish", 0) == SEM_FAILED
+		|| create_sem(&data->checker, "checker", 1) == SEM_FAILED
+		|| create_sem(&data->death, "death", 0) == SEM_FAILED)
+		(destroy_sem(data), exit(1));
 }
 
-void    execute(t_data *data)
+void	create_philos(t_data *data)
 {
-    data->philo = malloc(sizeof(pid_t) * data->number_of_philosophers);
-    if (!data->philo)
-        exit(1);
-    init_semaphore(data);
-    create_philos(data);
-    monitoring(data);
-    destroy_sem(data);
+	int	i;
+
+	i = 0;
+	data->start = get_time();
+	data->last_meal = data->start;
+	while (i < data->number_of_philosophers)
+	{
+		data->philo[i] = fork();
+		if (data->philo[i] == -1)
+			write(2, "fork failed\n", 12);
+		if (data->philo[i] == 0)
+		{
+			data->name = i + 1;
+			if (data->name % 2 == 0)
+				usleep(data->time_to_eat * 1000);
+			routine(data);
+		}
+		i++;
+	}
+}
+
+void	execute(t_data *data)
+{
+	data->philo = malloc(sizeof(pid_t) * data->number_of_philosophers);
+	if (!data->philo)
+		exit(1);
+	init_semaphore(data);
+	create_philos(data);
+	monitoring(data);
+	destroy_sem(data);
 }
